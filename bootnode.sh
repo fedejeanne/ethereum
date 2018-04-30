@@ -17,7 +17,7 @@ if [ ! -f $DATA_ROOT/.bootnode/boot.key ]; then
 fi
 # creates ethereum network
 [ ! "$(docker network ls | grep ethereum)" ] && docker network create ethereum
-[[ -z $BOOTNODE_SERVICE ]] && BOOTNODE_SERVICE="127.0.0.1"
+BOOTNODE_SERVICE=${BOOTNODE_SERVICE:-"127.0.0.1"}
 docker run -d --name ethereum-bootnode \
     -v $DATA_ROOT/.bootnode:/opt/bootnode \
     --network ethereum \
