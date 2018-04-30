@@ -12,9 +12,19 @@ docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 RPC_PORTMAP=
 RPC_ARG=
+
+# If the property RPC_PORT is set, use it to offer an RPC interface.
+# Thsis is useful to connect using the ethereum wallet, for example
 if [[ ! -z $RPC_PORT ]]; then
     RPC_ARG='--rpc --rpcaddr=0.0.0.0 --rpcapi=db,eth,net,web3,personal --rpccorsdomain "*"'
     RPC_PORTMAP="-p $RPC_PORT:8545"
+
+    echo "========================================================="
+    echo "Opened an RPC interface for you to connect at port $RPC_PORT. You can connect for example the \
+Mist wallet by adding the following parameters when launching it: '-rpc http://localhost:$RPC_PORT'"
+    echo
+    echo "\$> ethereum-wallet --rpc http://localhost:$RPC_PORT"
+    echo "========================================================="
 fi
 BOOTNODE_URL=${BOOTNODE_URL:-$(./getbootnodeurl.sh)}
 if [ ! -f $(pwd)/genesis.json ]; then
